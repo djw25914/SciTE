@@ -9,3 +9,6 @@ https://www.pjrc.com/teensy/td_libs_TinyGPS.html
 
 How to handle signals from interruptable pins (in essence, all of them with out board.)
 http://arduino.cc/en/Reference/AttachInterrupt
+
+More on Interrupts:
+http://www.gammon.com.au/forum/?id=11488
