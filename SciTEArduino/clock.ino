@@ -22,5 +22,3 @@ void printDigits(int digits) {
   Serial.print(digits);
 }
 
-
-
