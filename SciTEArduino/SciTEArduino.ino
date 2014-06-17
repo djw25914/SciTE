@@ -5,8 +5,7 @@
 
 int currentSubMenuItem = 10; // Set initial startup menu
 char* currentMode[] = {"STANDBY", "SCHEDULE", "MANUAL", "ERROR"}; //define Status messages
-int gpsRx = 10; //Set the receive port of the gps
-int gpsTx = 11; //Set other gps port (I think... copied from an example)
+
 int holdStatus, startHour1, startMin1, startHour2, startMin2, waterLength1, waterLength2; //setup global variables for watering
 int offset = 5;
 
