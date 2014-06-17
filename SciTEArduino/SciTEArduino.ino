@@ -13,6 +13,7 @@ TinyGPS gps; // setup GPS from TinyGPS library
 #define SerialGPS Serial1
 time_t prevDisplay = 0;
 
+//LiquidCrystal(rs, enable, d4, d5, d6, d7) 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 void setup() {   // put your setup code here, to run once:

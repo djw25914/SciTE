@@ -1,3 +1,5 @@
+// Get the time from the GPS device
+
 void getGPSTime(){
   while (SerialGPS.available()) {
     if (gps.encode(SerialGPS.read())) { // process gps messages
@@ -6,10 +8,10 @@ void getGPSTime(){
       int Year;
       byte Month, Day, Hour, Minute, Second;
       gps.crack_datetime(&Year, &Month, &Day, &Hour, &Minute, &Second, NULL, &age);
-      if (age < 500) {
+      if (age < 500) { // 500 milliseconds, presumably
         // set the Time to the latest GPS reading
         setTime(Hour, Minute, Second, Day, Month, Year);
-        adjustTime(offset * SECS_PER_HOUR);
+        adjustTime(offset * SECS_PER_HOUR); // where is SECS_PER_HOUR ... probably a library, perhaps timegps library
       }
     }
   }
