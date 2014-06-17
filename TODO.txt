@@ -1,7 +1,7 @@
 TODO:
 ·         Handle button presses
-o   Set up schedule change menu
+  o   Set up schedule change menu
 ·         Set up Watering mode
-o   When watering, display time or time remaining, amount of water used, and press back to cancel watering
+  o   When watering, display time or time remaining, amount of water used, and press back to cancel watering
 ·         Set up temperature related safety drainage
 ·         Test!!
