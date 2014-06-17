@@ -2,6 +2,102 @@ TODO:
 ·         Handle button presses
   o   Set up schedule change menu
 ·         Set up Watering mode
+                -Scheduled and Manual
   o   When watering, display time or time remaining, amount of water used, and press back to cancel watering
 ·         Set up temperature related safety drainage
 ·         Test!!
+
+
+-- Handle Button presses :: Priority - Highest --
+
+Each menu (switch-case structure) will have a button handler function 
+that will process which buttons have been pressed since the last cycle
+  - the cycles are very fast, should only get one button press per cycle
+  - in the regular menu, pressing up or down will increase or decrease current submenu item by 1
+    - pressing the back button will go to the parent menu (divide by 10)
+    - pressing enter will go into the submenu (multiply by 10)
+  - when editing (eg: hours selection, amount selection, etc), override normal up/down behavior. 
+-- end --
+
+-- Temperature related safety drainage :: Priority - Medium-High -- 
+
+  When the temperature in the lines (one of our thermistors will be measuring this) drops below a set temperatures (somewhere in the neighborhood of 33-35)
+  We will periodically drain a small amount from the lines. The hope is that the movement of the relatively warm heatsink of water in the tank will be 
+  considerably warmer than the water in the lines, so draining the water that is currently in the lines and replacing it with water from the tank 
+  may well be sufficient to prevent freezing in the lines. If necessary, seeing as the thermistor is in the line, this could potentially drain the entire
+  tank, if all of the water in the tank were below the threshold temperature. 
+  
+  we haven't cooked up the details on the particular thermistor yet, will update later. 
+
+-- end --
+
+-- Add One Time Task (tentative):: Priority - Low --
+
+user has selected 'add task'
+submenus made available:
+  - hour (1-12)
+  - minute (00,15,30,45)
+  - am/pm
+  - time or quantity
+  - if time
+    - hour
+    - minute (15 minute intervals)
+    - am/pm
+  - elseif quantity
+    - gallons
+  - one time or repeat
+  - month to run in
+  - day to run on
+  - cancel
+  - complete (perhaps only shown after the others have been entered??)
+  
+--end--
+
+-- Add Repeated Task (probable):: Priority - Medium --
+user has selected 'add task'
+submenus made available:
+  - hour
+  - minute
+  - am/pm
+  - time or quantity
+  - if time
+    - hour
+    - minute (15 minute intervals)
+  - elseif quantity
+    - gallons
+  - monday-sunday (boolean)
+  - cancel
+  - complete (perhaps only shown after the others have been entered??)
+  
+
+--water now option : Priority - High --
+
+user has selected menu item for "water now"
+submenus available:
+  - quantity or time
+    -if quantity
+       -gallons
+    -else time
+      -hours
+      -minutes (15 minute intervals)
+
+-- end --
+
+--watering behavior--
+
+if presently watering
+  - line 1 -- display time remaining or amount (gals) remaining
+  - line 2 -- push back to end
+  
+-- end --
+
+-- property changing note --
+  for the add task menus, each property should be "dirty" before the "complete" option should become visible
+  recommend keeping track of this with boolean variables, and checking on each entry.
+-- end --
+
+-- Implement Task Manager :: Priority - High --
+
+  Implement a task manager that can preferably execute an arbitrary number of tasks, at arbitrary times, as defined by a text file
+  -- suggest a cron-like utility?
+-- end --

@@ -33,6 +33,8 @@ void setup() {   // put your setup code here, to run once:
 
 void loop() { // put your main code here, to run repeatedly:
   Alarm.timerRepeat(3600, getGPSTime);
+  //as things are currently, there are only 2 jobs - a morning job and an evening job, these jobs are run every day.
+  //they run at times defined by the variables listed.
   Alarm.alarmRepeat(startHour1,startMin1,0,water1);
   Alarm.alarmRepeat(startHour2,startMin2,0,water2);
   displayMenu();
@@ -110,3 +112,5 @@ void displaySubMenu() {
   }
 }
 
+/*
+ * Button handling vs selectables (
