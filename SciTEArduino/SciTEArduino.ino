@@ -5,6 +5,10 @@
 
 int currentSubMenuItem = 10; // Set initial startup menu
 char* currentMode[] = {"STANDBY", "SCHEDULE", "MANUAL", "ERROR"}; //define Status messages
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 int holdStatus, startHour1, startMin1, startHour2, startMin2, waterLength1, waterLength2; //setup global variables for watering
 int offset = 5;
 
