@@ -5,10 +5,7 @@
 
 int currentSubMenuItem = 10; // Set initial startup menu
 char* currentMode[] = {"STANDBY", "SCHEDULE", "MANUAL", "ERROR"}; //define Status messages
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 int holdStatus, startHour1, startMin1, startHour2, startMin2, waterLength1, waterLength2; //setup global variables for watering
 int offset = 5;
 
@@ -41,7 +38,21 @@ void loop() { // put your main code here, to run repeatedly:
 }
 
 void displayMenu() {
+   
+/* 
+ * Base items are 1,2,..,n 
+ * children of 1 are 10,11...,19
+ * children of 11 would be 110,111...119 
+ * etc
+ * 
+ * This is a two line display, on the first line the current menu item will be displayed
+ * The second line are the sub-menu options (if applicable)
+ */
+
   lcd.setCursor(0, 0);
+  
+  /* Let say you were on item 110, and you hit the back button, divide by ten to get out a level so you would be back to 11
+   * you would multiply by ten to go in a menu level. */
   switch (currentSubMenuItem / 10) {
     case 1: // System Menu
       lcd.print("System Menu");
@@ -61,7 +72,7 @@ void displayMenu() {
 }
 
 void displaySubMenu() {
-  lcd.setCursor(0, 1);
+  lcd.setCursor(0, 1); //First spot on the second line
   switch (currentSubMenuItem) {
     case 10:
       lcd.print("System Status");
