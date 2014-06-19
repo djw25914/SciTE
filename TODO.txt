@@ -101,3 +101,9 @@ if presently watering
   Implement a task manager that can preferably execute an arbitrary number of tasks, at arbitrary times, as defined by a text file
   -- suggest a cron-like utility?
 -- end --
+
+-- periodic interval for anti-algae drainage :: Priority - Unknown (low) --
+
+Details needed
+
+-- end -- 
