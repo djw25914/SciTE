@@ -74,6 +74,7 @@ void displayMenu() {
 
 }
 
+
 void displaySubMenu() {
   lcd.setCursor(0, 1); //First spot on the second line
   switch (currentSubMenuItem) {
