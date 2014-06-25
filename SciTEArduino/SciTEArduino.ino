@@ -128,7 +128,9 @@ void displayMenu() {
   /* Let say you were on item 110, and you hit the back button, divide by ten to get out a level so you would be back to 11
    * you would multiply by ten to go in a menu level. */
   switch (currentSubMenuItem / 10) {
-    /* Do we really want people roaming the menus freely?? */
+    /* Do we really want people roaming the menus freely??
+       Roaming menus doesn't bother me, but changing schedule, putting it on hold or using manual mode should probably have some security, sure. -Tim
+    */
     case 1: // System Menu
       lcd.print("System Menu");
       displaySubMenu();
