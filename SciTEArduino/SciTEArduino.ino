@@ -4,51 +4,67 @@
 #include <LiquidCrystal.h>
 
 
-int currentSubMenuItem = 10; // Set initial startup menu
-char* currentMode[] = {"STANDBY", "SCHEDULE", "MANUAL", "ERROR"}; //define Status messages
-
-int holdStatus, startHour1, startMin1, startHour2, startMin2, waterLength1, waterLength2; //setup global variables for watering
-int offset = 5;
-
 enum button{up,down,left,right,enter,back};
-enum currentAction{none, waterUntilBack, waterSetTime, waterSetAmount, editSchedule, addSchedule, removeSchedule, adjustBrightness, adjustContrast};
+enum action{none, gettingTime, waterUntilBack, waterSetTime, waterSetAmount, dumpUntilBack, dumpSetTime, editSchedule, addSchedule, removeSchedule, adjustBrightness, adjustContrast};
 
-int menuOptions()
-{
-}
+short currentSelection = 1;
+action currentAction = none;
 
-int currentMenu; // in all other cases we should be able
+byte timeOffset = 5;
 
 TinyGPS gps; // setup GPS from TinyGPS library
 #define SerialGPS Serial1
 time_t prevDisplay = 0;
 
-//LiquidCrystal(rs, enable, d4, d5, d6, d7) 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_ENABLE, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
 
-void setup() {   // put your setup code here, to run once:
-  Serial.begin(9600);
-  SerialGPS.begin(4800);
-  Serial.println("Waiting for GPS time ... ");
-  
-  lcd.begin(16, 2);
-  holdStatus = 0;
-  startHour1 = 7;
-  startMin1 = 0;
-  waterLength1 = 0;
-  startHour1 = 19;
-  startMin1 = 0;
-  waterLength2 = 0;
+void setup() {
+    Serial.begin(9600);
+    SerialGPS.begin(4800);
+    Serial.println("Wating for GPS time ...");
+    lcd.begin(16, 2);
+    lcd.setCursor(0,0);
+    lcd.print("Getting time");
+    lcd.setCursor(0,1);
+    lcd.print("from GPS");
 }
 
-void loop() { // put your main code here, to run repeatedly:
-  Alarm.timerRepeat(3600, getGPSTime);
-  //as things are currently, there are only 2 jobs - a morning job and an evening job, these jobs are run every day.
-  //they run at times defined by the variables listed.
-  Alarm.alarmRepeat(startHour1,startMin1,0,water1);
-  Alarm.alarmRepeat(startHour2,startMin2,0,water2);
-  displayMenu();
+void loop() {
+    //Check all timers to see if an action needs to run/stop and
+    //set variables, statuses accordingly.
+    //Also check for one shots and remove them if they've been missed
+    //Don't forget to check for overrides and skip a job if needed
+    
+    /*********************************
+    * ...... Code goes here .........*
+    *********************************/
+    
+    //Handle time-related actions
+    switch (currentAction):
+    {
+        case gettingTime: 
+            handleGettingTime();
+            break;
+        case waterSetTime:
+            handleWaterSetTime();
+            break;
+        case waterSetAmount:
+            handleWaterSetAmount();
+            break;
+        case dumpSetTime();
+            handleDumpSetTime();
+            break;            
+    }
 }
+      
+// // // void loop() { // put your main code here, to run repeatedly:
+// // //   Alarm.timerRepeat(3600, getGPSTime);
+// // //   //as things are currently, there are only 2 jobs - a morning job and an evening job, these jobs are run every day.
+// // //   //they run at times defined by the variables listed.
+// // //   Alarm.alarmRepeat(startHour1,startMin1,0,water1);
+// // //   Alarm.alarmRepeat(startHour2,startMin2,0,water2);
+// // //   displayMenu();
+// // // }
 
 
 
@@ -78,6 +94,15 @@ bool in(int, int*[])
         
     }
 }
+
+// // // short currentSubMenuItem = 10; // Set initial startup menu
+// // // char* currentMode[] = {"STANDBY", "SCHEDULE", "MANUAL", "ERROR"}; //define Status messages
+
+// // // byte holdStatus, startHour1, startMin1, startHour2, startMin2, waterLength1, waterLength2; //setup global variables for watering
+
+// // // int menuOptions()
+// // // {
+// // // }
 
 // // // void displayMenu() {
 // // //    
@@ -116,6 +141,20 @@ bool in(int, int*[])
 // // // 
 // // // }
 
+// // // void setup() {   // put your setup code here, to run once:
+// // //   Serial.begin(9600);
+// // //   SerialGPS.begin(4800);
+// // //   Serial.println("Waiting for GPS time ... ");
+// // //   
+// // //   lcd.begin(16, 2);
+// // //   holdStatus = 0;
+// // //   startHour1 = 7;
+// // //   startMin1 = 0;
+// // //   waterLength1 = 0;
+// // //   startHour1 = 19;
+// // //   startMin1 = 0;
+// // //   waterLength2 = 0;
+// // // }
 
 // // // void displaySubMenu() {
 // // //   lcd.setCursor(0, 1); //First spot on the second line

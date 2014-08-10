@@ -34,7 +34,7 @@
   *       // - - ones place (byte)
   *       // - Duration
   *       // - - Hours (byte)
-  *       // - - Minutes (00,15,30,45) (or maybe 5 minute intervals?)
+  *       // - - Minutes (00,15,30,45) (or maybe 5 minute shortervals?)
   *       // Confirm (not available till prior are set
   *       // Cancel 
   *    33) Add Schedule
@@ -49,7 +49,7 @@
   *       // - - ones place (byte)
   *       // - Duration
   *       // - - Hours (byte)
-  *       // - - Minutes (00,15,30,45) (or maybe 5 minute intervals?)
+  *       // - - Minutes (00,15,30,45) (or maybe 5 minute shortervals?)
   *       // Confirm (not available till prior are set
   *       // Cancel
   *    34) Remove Schedule
@@ -67,31 +67,31 @@
   
 
 //Menu option constants, because using the numbers directly could be a headache later ...
-const int MENU_WATER_NOW = 1;
-    const int MENU_WATER_UNTIL_BACK = 10;
-    const int MENU_WATER_FIXED_TIME = 11;
-    const int MENU_WATER_FIXED_AMOUNT = 12;
-const int MENU_DUMP_NOW = 2;
-    const int MENU_DUMP_UNTIL_BACK = 20;
-    const int MENU_DUMP_FIXED_TIME = 21;
-const int MENU_SYSTEM_STATUS=3;
-    const int MENU_NEXT_DATE_TIME=30;
-    const int MENU_NEXT_TIME_AMOUNT=31;
-const int MENU_SCHEDULE=4;
-    const int MENU_VIEW_SCHEDULE=40;
-    const int MENU_EDIT_SCHEDULE=41;
-    const int MENU_ADD_SCHEDULE=42;
-    const int MENU_REMOVE_SCHEDULE=43;
-    const int MENU_OVERRIDE_SCHEDULE=44;
-const int MENU_SCREEN_SETTINGS=5;
-    const int MENU_SCREEN_BRIGHTNESS=50;
-    const int MENU_SCREEN_CONTRAST=51;
+const short MENU_WATER_NOW = 1;
+    const short MENU_WATER_UNTIL_BACK = 10;
+    const short MENU_WATER_FIXED_TIME = 11;
+    const short MENU_WATER_FIXED_AMOUNT = 12;
+const short MENU_DUMP_NOW = 2;
+    const short MENU_DUMP_UNTIL_BACK = 20;
+    const short MENU_DUMP_FIXED_TIME = 21;
+const short MENU_SYSTEM_STATUS=3;
+    const short MENU_NEXT_DATE_TIME=30;
+    const short MENU_NEXT_TIME_AMOUNT=31;
+const short MENU_SCHEDULE=4;
+    const short MENU_VIEW_SCHEDULE=40;
+    const short MENU_EDIT_SCHEDULE=41;
+    const short MENU_ADD_SCHEDULE=42;
+    const short MENU_REMOVE_SCHEDULE=43;
+    const short MENU_OVERRIDE_SCHEDULE=44;
+const short MENU_SCREEN_SETTINGS=5;
+    const short MENU_SCREEN_BRIGHTNESS=50;
+    const short MENU_SCREEN_CONTRAST=51;
 
 //Should be equal to the number of constants declared immediately above
-const int MENU_LENGTH=19;
+const byte MENU_LENGTH=19;
 
 //An array of menu options, handy for use with the "in" function
-const int MENU_OPTIONS[MENU_LENGTH]
+const short MENU_OPTIONS[MENU_LENGTH]
 {
     MENU_WATER_NOW ,
         MENU_WATER_UNTIL_BACK ,
