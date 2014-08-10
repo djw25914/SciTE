@@ -24,8 +24,70 @@ void handleButtonPress(button pressed)
             }}
         //Enter handling is more delicate ...
         if (pressed = enter){
+            switch (currentSelection)
+            {
+                case MENU_WATER_NOW:
+                    currentSelection = MENU_WATER_NOW * 10;
+                    updateDisplay();
+                    break;
+                case MENU_WATER_UNTIL_BACK:
+                    menuWaterUntilBack();
+                    break;
+                case MENU_WATER_FIXED_TIME:
+                    menuWaterFixedTime();
+                    break;
+                case MENU_WATER_FIXED_AMOUNT:
+                    menuWaterFixedAmount();
+                    break;
+                case MENU_DUMP_NOW:
+                    currentSelection = MENU_DUMP_NOW * 10;
+                    break;
+                case MENU_DUMP_UNTIL_BACK:
+                    menuDumpUntilBack();
+                    break;
+                case MENU_DUMP_FIXED_TIME:
+                    menuDumpFixedTime();
+                    break;
+                case MENU_SYSTEM_STATUS:
+                    currentSelection = MENU_SYSTEM_STATUS * 10;
+                    break;
+                case MENU_NEXT_DATE_TIME:
+                    menuNextDateTime();
+                    break;
+                case MENU_NEXT_TIME_AMOUNT:
+                    menuNextTimeAmount();
+                    break;
+                case MENU_SCHEDULE:
+                    currentSelection = MENU_SCHEDULE*10;
+                    break;
+                case MENU_VIEW_SCHEDULE:
+                    menuViewSchedule();
+                    break;
+                case MENU_EDIT_SCHEDULE:
+                    menuEditSchedule();
+                    break;
+                case MENU_ADD_SCHEDULE:
+                    menuAddSchedule();
+                    break;
+                case MENU_REMOVE_SCHEDULE:
+                    menuRemoveSchedule();
+                    break;
+                case MENU_OVERRIDE_SCHEDULE:
+                    menuOverrideSchedule();
+                    break;
+                case MENU_SCREEN_SETTINGS:
+                    currentSelection = MENU_SCREEN_SETTINGS * 10;
+                    break;
+                case MENU_SCREEN_BRIGHTNESS:
+                    menuScreenBrightness();
+                    break;
+                case MENU_SCREEN_CONTRAST:
+                    menuScreenContrast();
+                    break;
+        }
+        
             
         
-    }
+        }
     }
 }
