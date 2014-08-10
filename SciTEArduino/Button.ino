@@ -104,24 +104,3 @@ void menuNextDateTime()
     
 }
 
-class ScheduleItem
-{
-private:
-    bool _oneShot;
-    uint8_t _hour;
-    uint8_t _minutes;
-    bool _days[7]; // Sunday is zero!
-    bool _timeMode;    // 1 for time based, 0 for amount based
-    uint16_t amount;  // Minutes for time based, gallons for amount based
-public:
-    bool oneShot() {
-        return _oneShot;
-    }
-    
-    uint8_t _hour = 
-    
-};
-    
-    
-    
-}

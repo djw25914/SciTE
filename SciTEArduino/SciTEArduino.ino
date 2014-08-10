@@ -2,7 +2,7 @@
 #include <Time.h>
 #include <TimeAlarms.h>
 #include <LiquidCrystal.h>
-
+#include "ScheduleItem.cpp"
 /* For memory management */
 #include <stdlib.h> // for malloc and free
 void* operator new(size_t size) { return malloc(size); } 
