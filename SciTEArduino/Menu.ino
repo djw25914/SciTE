@@ -71,21 +71,24 @@ const int MENU_WATER_NOW = 1;
     const int MENU_WATER_UNTIL_BACK = 10;
     const int MENU_WATER_FIXED_TIME = 11;
     const int MENU_WATER_FIXED_AMOUNT = 12;
-const int MENU_SYSTEM_STATUS=2;
-    const int MENU_NEXT_DATE_TIME=20;
-    const int MENU_NEXT_TIME_AMOUNT=21;
-const int MENU_SCHEDULE=3;
-    const int MENU_VIEW_SCHEDULE=30;
-    const int MENU_EDIT_SCHEDULE=31;
-    const int MENU_ADD_SCHEDULE=32;
-    const int MENU_REMOVE_SCHEDULE=33;
-    const int MENU_OVERRIDE_SCHEDULE=34;
-const int MENU_SCREEN_SETTINGS=4;
-    const int MENU_SCREEN_BRIGHTNESS=40;
-    const int MENU_SCREEN_CONTRAST=41;
+const int MENU_DUMP_NOW = 2;
+    const int MENU_DUMP_UNTIL_BACK = 20;
+    const int MENU_DUMP_FIXED_TIME = 21;
+const int MENU_SYSTEM_STATUS=3;
+    const int MENU_NEXT_DATE_TIME=30;
+    const int MENU_NEXT_TIME_AMOUNT=31;
+const int MENU_SCHEDULE=4;
+    const int MENU_VIEW_SCHEDULE=40;
+    const int MENU_EDIT_SCHEDULE=41;
+    const int MENU_ADD_SCHEDULE=42;
+    const int MENU_REMOVE_SCHEDULE=43;
+    const int MENU_OVERRIDE_SCHEDULE=44;
+const int MENU_SCREEN_SETTINGS=5;
+    const int MENU_SCREEN_BRIGHTNESS=50;
+    const int MENU_SCREEN_CONTRAST=51;
 
 //Should be equal to the number of constants declared immediately above
-const int MENU_LENGTH=16;
+const int MENU_LENGTH=19;
 
 //An array of menu options, handy for use with the "in" function
 const int MENU_OPTIONS[MENU_LENGTH]
@@ -94,6 +97,9 @@ const int MENU_OPTIONS[MENU_LENGTH]
         MENU_WATER_UNTIL_BACK ,
         MENU_WATER_FIXED_TIME ,
         MENU_WATER_FIXED_AMOUNT ,
+    MENU_DUMP_NOW,
+        MENU_DUMP_UNTIL_BACK,
+        MENU_DUMP_FIXED_TIME,
     MENU_SYSTEM_STATUS,
         MENU_NEXT_DATE_TIME,
         MENU_NEXT_TIME_AMOUNT,
@@ -114,6 +120,9 @@ const char* MENU_TEXTS[MENU_LENGTH] = {
         "Manual Operation",
         "Fixed Time",
         "Fixed Volume",
+    "Dump Now",
+        "Manual Dump"
+        "Dump Time"
     "System Status",
         "Next Date/Time",
         "Next Amount/Time",
