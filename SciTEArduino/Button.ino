@@ -84,10 +84,7 @@ void handleButtonPress(button pressed)
                 case MENU_SCREEN_CONTRAST:
                     menuScreenContrast();
                     break;
-        }
-        
-            
-        
+            }
         }
     }
 }
