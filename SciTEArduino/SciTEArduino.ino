@@ -3,14 +3,22 @@
 #include <TimeAlarms.h>
 #include <LiquidCrystal.h>
 
+/* For memory management */
+#include <stdlib.h> // for malloc and free
+void* operator new(size_t size) { return malloc(size); } 
+void operator delete(void* ptr) { free(ptr); }
 
+
+/* Enumerated type for buttons and actions for convenience */
 enum button{up,down,left,right,enter,back};
-enum action{none, gettingTime, waterUntilBack, waterSetTime, waterSetAmount, dumpUntilBack, dumpSetTime, editSchedule, addSchedule, removeSchedule, adjustBrightness, adjustContrast};
+enum action{none, gettingTime, waterUntilBack, waterSetTimeMenu, waterSetTime, waterSetAmountMenu, waterSetAmount, dumpUntilBack, dumpSetTimeMenu, dumpSetTime, editSchedule, addSchedule, overrideSchedule, removeSchedule, adjustBrightness, adjustContrast};
 
-short currentSelection = 1;
+/* Keep track of where we are */
+uint8_t currentSelection = 1;
 action currentAction = none;
 
-byte timeOffset = 5;
+/* Granularity for the schedules */
+uint8_t timeOffset = 5;
 
 TinyGPS gps; // setup GPS from TinyGPS library
 #define SerialGPS Serial1
@@ -55,18 +63,25 @@ void loop() {
             handleDumpSetTime();
             break;            
     }
+    
+    /* Also handle Thermistor dump settings */
 }
-      
-// // // void loop() { // put your main code here, to run repeatedly:
-// // //   Alarm.timerRepeat(3600, getGPSTime);
-// // //   //as things are currently, there are only 2 jobs - a morning job and an evening job, these jobs are run every day.
-// // //   //they run at times defined by the variables listed.
-// // //   Alarm.alarmRepeat(startHour1,startMin1,0,water1);
-// // //   Alarm.alarmRepeat(startHour2,startMin2,0,water2);
-// // //   displayMenu();
-// // // }
 
+void handleGettingTime() {
+    
+}
 
+void handleWaterSetTime() {
+    
+}
+
+void handleWaterSetAmount() {
+    
+}
+
+void handleDumpSetTime() {
+    
+}
 
 void updateDisplay()
 {
@@ -78,7 +93,7 @@ void updateDisplay()
         else
             lcd.print("Top Menu");
         lcd.setCursor(0,1);
-        lcd.print(menuTexts[currentSelection]);
+        lcd.print(menuTexts[currentSelection]); 
     }
 }
 
@@ -87,12 +102,14 @@ int minor(int num)
     return (num - (num % 10));
 }
 
-bool in(int, int*[])
+bool inMenu(int item)
 { //The list is short enough that this rather inefficient approach shouldn't matter
-    for (int cnt = 0; cnt < MENU_LENGTH; ++cnt)
+    for (uint8_t cnt = 0; cnt < MENU_LENGTH; ++cnt)
     {
-        
+        if (MENU_OPTIONS[cnt] == item)
+            return true;
     }
+    return false;
 }
 
 // // // short currentSubMenuItem = 10; // Set initial startup menu

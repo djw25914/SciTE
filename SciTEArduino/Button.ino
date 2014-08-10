@@ -12,7 +12,7 @@ void handleButtonPress(button pressed)
                 updateDisplay();
             }}
         if (pressed = down){ //Move cursor down one position
-            if (in(currentSelection+1)){
+            if (inMenu(currentSelection+1)){
                 currentSelection++;
                 updateDisplay();
             }}
@@ -31,22 +31,27 @@ void handleButtonPress(button pressed)
                     updateDisplay();
                     break;
                 case MENU_WATER_UNTIL_BACK:
-                    menuWaterUntilBack();
+                    currentAction = waterUntilBack;
+                    updateDisplay();
                     break;
                 case MENU_WATER_FIXED_TIME:
-                    menuWaterFixedTime();
+                    currentAction = waterSetTime;
+                    updateDisplay();
                     break;
                 case MENU_WATER_FIXED_AMOUNT:
-                    menuWaterFixedAmount();
+                    currentAction = waterSetAmount;
+                    updateDisplay();
                     break;
                 case MENU_DUMP_NOW:
                     currentSelection = MENU_DUMP_NOW * 10;
                     break;
                 case MENU_DUMP_UNTIL_BACK:
-                    menuDumpUntilBack();
+                    currentAction = dumpUntilBack;
+                    updateDisplay();
                     break;
                 case MENU_DUMP_FIXED_TIME:
-                    menuDumpFixedTime();
+                    currentAction = dumpFixedTime;
+                    updateDisplay();
                     break;
                 case MENU_SYSTEM_STATUS:
                     currentSelection = MENU_SYSTEM_STATUS * 10;
@@ -87,4 +92,36 @@ void handleButtonPress(button pressed)
             }
         }
     }
+}
+
+void menuNextDateTime()
+{ //Display next Date Time
+    currentAction = nextDateTime;
+    for (cnt = 0; cnt < scheduleCount; ++cnt)
+    {
+        
+    }
+    
+}
+
+class ScheduleItem
+{
+private:
+    bool _oneShot;
+    uint8_t _hour;
+    uint8_t _minutes;
+    bool _days[7]; // Sunday is zero!
+    bool _timeMode;    // 1 for time based, 0 for amount based
+    uint16_t amount;  // Minutes for time based, gallons for amount based
+public:
+    bool oneShot() {
+        return _oneShot;
+    }
+    
+    uint8_t _hour = 
+    
+};
+    
+    
+    
 }

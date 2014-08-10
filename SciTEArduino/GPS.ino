@@ -4,9 +4,9 @@ void getGPSTime(){
   while (SerialGPS.available()) {
     if (gps.encode(SerialGPS.read())) { // process gps messages
       // when TinyGPS reports new data...
-      unsigned long age;
-      int Year;
-      byte Month, Day, Hour, Minute, Second;
+      uint32_t long age;
+      uint16_t int Year;
+      uint8_t Month, Day, Hour, Minute, Second;
       gps.crack_datetime(&Year, &Month, &Day, &Hour, &Minute, &Second, NULL, &age);
       if (age < 500) { // 500 milliseconds, presumably
         // set the Time to the latest GPS reading
