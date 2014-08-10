@@ -1,5 +1,5 @@
 TODO:
-·         Handle button presses
+·         Handle button presses ***********In progress - Dustin *****************
   o   Set up schedule change menu
 ·         Set up Watering mode
                 -Scheduled and Manual
@@ -31,6 +31,12 @@ that will process which buttons have been pressed since the last cycle
 
 -- end --
 
+
+
+
+
+******Revision*******
+******Now plan to merge OneTime with add repeated task, creating add task, should reduce overlap significantly *********
 -- Add One Time Task (tentative):: Priority - Low --
 
 user has selected 'add task'
