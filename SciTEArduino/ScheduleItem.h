@@ -1,3 +1,8 @@
+#include "irrigation_types.h" 
+#include "Time.h"
+
+#ifndef SCHEDULEITEM_H
+#define SCHEDULEITEM_H
 class ScheduleItem
 {
 private:
@@ -5,9 +10,11 @@ private:
     uint8_t _hour;
     uint8_t _minutes;
     bool _days[7]; // Sunday is zero!
-    bool _timeMode;    // 1 for time based, 0 for amount based
+    mode dispenseMode;
     uint16_t _amount;  // Minutes for time based, gallons for amount based
 public:
+    ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, uint8_t days, mode dispenseMode, uint16_t amount);
+    
     bool oneShot();
     void setOneShot(bool b);
 
@@ -20,9 +27,11 @@ public:
     bool * days();
     void setDays(bool b[7]);
     
-    bool timeMode();
-    void setTimeMode(bool b);
+    mode dispenseMode();
+    void setDispenseMode(mode m);
 
     uint16_t amount();
     void setAmount(uint16_t i);
 };
+
+#endif SCHEDULEITEM_H

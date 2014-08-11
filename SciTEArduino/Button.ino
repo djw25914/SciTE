@@ -94,13 +94,16 @@ void handleButtonPress(button pressed)
     }
 }
 
-void menuNextDateTime()
-{ //Display next Date Time
-    currentAction = nextDateTime;
-    for (cnt = 0; cnt < scheduleCount; ++cnt)
-    {
-        
-    }
+menuNextDateTime() {
+    uint8_t itemNumber;
+    uint8_t dayNumber;
     
+    if (nextJob(itemNumber, dayNumber))
+    {
+        lcd.setCursor(0,0);
+        lcd.print(dayStrings[dayNumber]);
+        lcd.setCursor(0,1);
+        lcd.print(
+    }
 }
 

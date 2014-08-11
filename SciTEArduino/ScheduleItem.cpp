@@ -1,4 +1,15 @@
 #include "ScheduleItem.h"
+#include "irrigation_types.h"
+#include "Time.h"
+
+ScheduleItem::ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, uint8_t days, mode dispenseMode, uint16_t amount) {
+    _oneShot;
+    uint8_t _hour;
+    uint8_t _minutes;
+    bool _days[7]; // Sunday is zero!
+    mode dispenseMode;
+    uint16_t _amount;  // Minutes for time based, gallons for amount based
+}
 
 bool ScheduleItem::oneShot() {
     return _oneShot;
@@ -28,12 +39,12 @@ void ScheduleItem::setDays(bool b[7]) { //Expects a bool * passed in!!
         _days[cnt] = b[cnt];
     }
 }
-bool ScheduleItem::timeMode()
+bool ScheduleItem::dispenseMode()
 { //If we're going by time, then yes, else no
-    return _timeMode;
+    return _dispenseMode;
 }
-void ScheduleItem::setTimeMode(bool b) {
-    _timeMode = b;
+void ScheduleItem::setDispenseMode(mode m) {
+    _dispenseMode = m;
 }
 uint16_t ScheduleItem::amount() {
     return _amount;

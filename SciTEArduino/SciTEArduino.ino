@@ -1,17 +1,11 @@
 #include <TinyGPS.h>
 #include <Time.h>
 #include <TimeAlarms.h>
+#include <Arduino.h>
 #include <LiquidCrystal.h>
 #include "ScheduleItem.cpp"
-/* For memory management */
-#include <stdlib.h> // for malloc and free
-void* operator new(size_t size) { return malloc(size); } 
-void operator delete(void* ptr) { free(ptr); }
-
-
-/* Enumerated type for buttons and actions for convenience */
-enum button{up,down,left,right,enter,back};
-enum action{none, gettingTime, waterUntilBack, waterSetTimeMenu, waterSetTime, waterSetAmountMenu, waterSetAmount, dumpUntilBack, dumpSetTimeMenu, dumpSetTime, editSchedule, addSchedule, overrideSchedule, removeSchedule, adjustBrightness, adjustContrast};
+#include "OverrideItem.cpp"
+#include "irrigation_types.h"
 
 /* Keep track of where we are */
 uint8_t currentSelection = 1;
@@ -25,6 +19,9 @@ TinyGPS gps; // setup GPS from TinyGPS library
 time_t prevDisplay = 0;
 
 LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_ENABLE, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
+
+ScheduleItem schedule[];
+OverrideItem overrides[];
 
 void setup() {
     Serial.begin(9600);
@@ -110,6 +107,78 @@ bool inMenu(int item)
             return true;
     }
     return false;
+}
+
+bool isOverridden(uint8_t job, uint8_t day)
+{
+    // Check for overrides
+    for (uint8_t ocnt = 0; ocnt < overrideCount; ++ocnt) {
+        if (overrides[ocnt]->job() == job) { // There is an override on this job
+            if (overrides[ocnt]->day() == day) { //... on this day
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+bool nextJob(int & itemNumber, int & dayNumber) //Should be sufficient to find out everything about the job in question
+{
+    //snapshot of current time
+    uint8_t today = today();
+    uint8_t hour = hour();
+    uint8_t minute = minute();
+    time_t now = now();
+    
+    time_t lowestTime = now + 691200; //Only 7 days a week, so this can't happen.
+    uint8_t lowestDay = 255; 
+    uint8_t lowestItem = 255; //Possible, but very unlikely
+    
+    for (cnt = 0; cnt < scheduleCount; ++cnt) {
+        ScheduleItem item = schedule[cnt];
+        bool * days = item->days();
+        int daycnt = today;
+        time_t t; //A temporary for keeping track of the lowest time
+        uint8t h; //A temporary for hours
+        uint16t m; // A temporary for minutes
+        
+        for (int daycnt = 0; daycnt < 7; ++daycnt) {
+            if (days[daycnt] && isOverridden == 0) {//This schedule runs on day [daycnt]
+                if (daycnt == today) {//If it runs today ... could be nearly a week away or later on today
+                    if (item->hour() > hour) {//Later on today
+                        t = now + item->hour() * 3600 + (item->minute() - minute) * 60;
+                    } else if (item->hour() < hour { //nearly a week away
+                        t = now + 86400 + (24-(hour-item->hour())) * 3600 + (item->minute() - minute) * 60; 
+                    } else { //same hour, need to check minutes
+                        if (item->minute() > minute) {//Runs in a few minutes 
+                            t = now + item->minute() * 60;
+                        } else {
+                            t = now + 601200 + (minute - item->minute()) * 60;
+                        }
+                    }
+                } else if (daycnt > today) {
+                    t = ((daycnt - today) * 1440 - (hour*60)+minute + (item->hour()*60)+item->minute()) * 60;
+                } else {
+                    t = ((daycnt - today + 7) * 1440 - (hour*60)+minute + (item->hour()*60)+item->minute()) * 60;
+                }
+                if (t < lowestTime) {
+                    lowestTime = t;
+                    lowestDay = daycnt;
+                    lowestItem = cnt;
+                }
+            } // End of if days[daycnt]
+        } //End of inner for
+    } //End of outer for
+    if (lowestTime < now() + 691200) {
+        itemNumber = lowestItem;
+        dayNumber = lowestDay;
+        return 1
+    } else {
+        itemNumber = 255;
+        dayNumber=255;
+        return 0;
+    }
 }
 
 // // // short currentSubMenuItem = 10; // Set initial startup menu
