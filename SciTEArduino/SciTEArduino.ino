@@ -1,3 +1,5 @@
+/* The Arduino software recognizes multiple *.ino files as all belonging to one file, so no need to write includes for them. */
+
 #include <TinyGPS.h>
 #include <Time.h>
 #include <TimeAlarms.h>
@@ -39,15 +41,15 @@ void loop() {
     //set variables, statuses accordingly.
     //Also check for one shots and remove them if they've been missed
     //Don't forget to check for overrides and skip a job if needed
-    
+
     /*********************************
     * ...... Code goes here .........*
     *********************************/
-    
+
     //Handle time-related actions
     switch (currentAction):
     {
-        case gettingTime: 
+        case gettingTime:
             handleGettingTime();
             break;
         case waterSetTime:
@@ -58,26 +60,26 @@ void loop() {
             break;
         case dumpSetTime();
             handleDumpSetTime();
-            break;            
+            break;
     }
-    
+
     /* Also handle Thermistor dump settings */
 }
 
 void handleGettingTime() {
-    
+
 }
 
 void handleWaterSetTime() {
-    
+
 }
 
 void handleWaterSetAmount() {
-    
+
 }
 
 void handleDumpSetTime() {
-    
+
 }
 
 void updateDisplay()
@@ -87,10 +89,10 @@ void updateDisplay()
         lcd.setCursor(0,0);
         if ((currentSelection % 10) > 0)
             lcd.print(menuTexts[currentSelection % 10];
-        else
+        elseOnly 7 days a week, so this can't happen.
             lcd.print("Top Menu");
         lcd.setCursor(0,1);
-        lcd.print(menuTexts[currentSelection]); 
+        lcd.print(menuTexts[currentSelection]);
     }
 }
 
@@ -119,7 +121,7 @@ bool isOverridden(uint8_t job, uint8_t day)
             }
         }
     }
-    
+
     return false;
 }
 
@@ -130,28 +132,28 @@ bool nextJob(int & itemNumber, int & dayNumber) //Should be sufficient to find o
     uint8_t hour = hour();
     uint8_t minute = minute();
     time_t now = now();
-    
-    time_t lowestTime = now + 691200; //Only 7 days a week, so this can't happen.
-    uint8_t lowestDay = 255; 
+
+    time_t lowestTime = now + 691200; //Now + 8 days, can't happen ever.
+    uint8_t lowestDay = 255;  //255 > 7 as well.
     uint8_t lowestItem = 255; //Possible, but very unlikely
-    
+
     for (cnt = 0; cnt < scheduleCount; ++cnt) {
         ScheduleItem item = schedule[cnt];
         bool * days = item->days();
-        int daycnt = today;
+        uint8_t daycnt = today;
         time_t t; //A temporary for keeping track of the lowest time
-        uint8t h; //A temporary for hours
-        uint16t m; // A temporary for minutes
-        
-        for (int daycnt = 0; daycnt < 7; ++daycnt) {
+        uint8_t h; //A temporary for hours
+        uint16_t m; // A temporary for minutes
+
+        for (uint8_t daycnt = 0; daycnt < 7; ++daycnt) {
             if (days[daycnt] && isOverridden == 0) {//This schedule runs on day [daycnt]
                 if (daycnt == today) {//If it runs today ... could be nearly a week away or later on today
                     if (item->hour() > hour) {//Later on today
                         t = now + item->hour() * 3600 + (item->minute() - minute) * 60;
                     } else if (item->hour() < hour { //nearly a week away
-                        t = now + 86400 + (24-(hour-item->hour())) * 3600 + (item->minute() - minute) * 60; 
+                        t = now + 86400 + (24-(hour-item->hour())) * 3600 + (item->minute() - minute) * 60;
                     } else { //same hour, need to check minutes
-                        if (item->minute() > minute) {//Runs in a few minutes 
+                        if (item->minute() > minute) {//Runs in a few minutes
                             t = now + item->minute() * 60;
                         } else {
                             t = now + 601200 + (minute - item->minute()) * 60;
@@ -170,7 +172,7 @@ bool nextJob(int & itemNumber, int & dayNumber) //Should be sufficient to find o
             } // End of if days[daycnt]
         } //End of inner for
     } //End of outer for
-    if (lowestTime < now() + 691200) {
+    if (lowestTime < now() + 691200) { //If there was a job
         itemNumber = lowestItem;
         dayNumber = lowestDay;
         return 1
@@ -191,19 +193,19 @@ bool nextJob(int & itemNumber, int & dayNumber) //Should be sufficient to find o
 // // // }
 
 // // // void displayMenu() {
-// // //    
-// // // /* 
-// // //  * Base items are 1,2,..,n 
+// // //
+// // // /*
+// // //  * Base items are 1,2,..,n
 // // //  * children of 1 are 10,11...,19
-// // //  * children of 11 would be 110,111...119 
+// // //  * children of 11 would be 110,111...119
 // // //  * etc
-// // //  * 
+// // //  *
 // // //  * This is a two line display, on the first line the current menu item will be displayed
 // // //  * The second line are the sub-menu options (if applicable)
 // // //  */
-// // // 
+// // //
 // // //   lcd.setCursor(0, 0);
-// // //   
+// // //
 // // //   /* Let say you were on item 110, and you hit the back button, divide by ten to get out a level so you would be back to 11
 // // //    * you would multiply by ten to go in a menu level. */
 // // //   switch (currentSubMenuItem / 10) {
@@ -224,14 +226,14 @@ bool nextJob(int & itemNumber, int & dayNumber) //Should be sufficient to find o
 // // //     default:
 // // //       break;
 // // //   }
-// // // 
+// // //
 // // // }
 
 // // // void setup() {   // put your setup code here, to run once:
 // // //   Serial.begin(9600);
 // // //   SerialGPS.begin(4800);
 // // //   Serial.println("Waiting for GPS time ... ");
-// // //   
+// // //
 // // //   lcd.begin(16, 2);
 // // //   holdStatus = 0;
 // // //   startHour1 = 7;
