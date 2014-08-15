@@ -54,8 +54,8 @@ bool OverrideItem::operator!= ( OverrideItem o )
         return true;
     return false;
 }
-
-void OverrideItem::_setNextItemNumber(uint16_t n)
-{
-    _nextItemNumber = n;
-}
+public:
+    static void OverrideItem::_setNextItemNumber(uint16_t n)
+    {
+        _nextItemNumber = n;
+    }

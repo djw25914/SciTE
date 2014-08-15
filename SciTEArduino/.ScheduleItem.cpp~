@@ -59,19 +59,14 @@ uint16_t ScheduleItem::itemNumber()
     return _itemNumber;
 }
 
-void ScheduleItem::_setNextItemNumber(uint16_t n)
-{
-    _nextItemNumber = n;
-}
-
-bool ScheduleItem::operator== ( ScheduleItem s )
+bool operator== ( ScheduleItem s )
 {
     if ( s->itemNumber() == _itemNumber)
         return true;
     return false;
 }
 
-bool ScheduleItem::operator!= ( ScheduleItem s )
+bool operator!= ( ScheduleItem s )
 {
     if ( s->itemNumber() == _itemNumber )
         return true;

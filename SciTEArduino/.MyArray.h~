@@ -1,0 +1,18 @@
+#ifndef SCHEDULE_ITEM_ARRAY_H
+#define SCHEDULE_ITEM_ARRAY_H
+
+template<class T>
+class MyArray {
+private:
+    void _grow();
+    T *_items;
+    uint8_t _size;
+    uint8_t _count;
+public:
+    void MyArray();
+    const T& at(uint8_t position);
+    void add(T& item);
+    void remove(uint8_t position);
+    void remove(T &item);
+};
+#endif

@@ -1,3 +1,46 @@
+Revised ToDo, taking into account what's going on as of mid-august:
+
+o File IO
+    - 2 files will need to be stored in non-volatile storage to keep track of the schedule and any possible overrides.
+    - Need a function for reading these files
+        eg: void readFile(bool file, char* return) { ... }
+    - Need a function for writing these files
+        eg: void writeFile(bool file, char* text) { ... }
+----Because this is an Arduino and we don't have the usual libraries available, this may or may not be a challenging endeavor
+
+
+o Need functions to generator/parse the files. ****Planned - Dustin *****
+
+
+o Unit Testing
+    - OverrideItem on its own
+    - ScheduleItem on its own
+    - LinkedList with a primitive
+    - LinkedList with OverrideItem
+    - LinkedLIst with ScheduleItem
+    - Applications of the above as seen in SciTEArduino.ino
+    - Menu and friends on its own (stripped down version will do?)
+
+o Action handling (much still needs to be done here)
+
+o GPS time handling
+    - writing AND testing
+    - should interact with other things such as:
+        --When its finished being set, we should check for expired Overrides
+    - ?? Probably more than I remember off the top of my head.
+
+o Function to open a solenoid
+    eg: void openSolenoid(bool solenoid) { ... }
+o Function to close solenoid
+    eg: void closeSolenoid(bool solenoid) { ... }
+
+o Function to handle reading thermistor values { ... }
+
+
+o and much, much more!!
+
+
+
 TODO:
 ·         Handle button presses ***********In progress - Dustin *****************
   o   Set up schedule change menu
@@ -7,27 +50,26 @@ TODO:
 ·         Set up temperature related safety drainage
 ·         Test!!
 
-
 -- Handle Button presses :: Priority - Highest --
 
-Each menu (switch-case structure) will have a button handler function 
+Each menu (switch-case structure) will have a button handler function
 that will process which buttons have been pressed since the last cycle
   - the cycles are very fast, should only get one button press per cycle
   - in the regular menu, pressing up or down will increase or decrease current submenu item by 1
     - pressing the back button will go to the parent menu (divide by 10)
     - pressing enter will go into the submenu (multiply by 10)
-  - when editing (eg: hours selection, amount selection, etc), override normal up/down behavior. 
+  - when editing (eg: hours selection, amount selection, etc), override normal up/down behavior.
 -- end --
 
--- Temperature related safety drainage :: Priority - Medium-High -- 
+-- Temperature related safety drainage :: Priority - Medium-High --
 
   When the temperature in the lines (one of our thermistors will be measuring this) drops below a set temperatures (somewhere in the neighborhood of 33-35)
-  We will periodically drain a small amount from the lines. The hope is that the movement of the relatively warm heatsink of water in the tank will be 
-  considerably warmer than the water in the lines, so draining the water that is currently in the lines and replacing it with water from the tank 
+  We will periodically drain a small amount from the lines. The hope is that the movement of the relatively warm heatsink of water in the tank will be
+  considerably warmer than the water in the lines, so draining the water that is currently in the lines and replacing it with water from the tank
   may well be sufficient to prevent freezing in the lines. If necessary, seeing as the thermistor is in the line, this could potentially drain the entire
-  tank, if all of the water in the tank were below the threshold temperature. 
-  
-  we haven't cooked up the details on the particular thermistor yet, will update later. 
+  tank, if all of the water in the tank were below the threshold temperature.
+
+  we haven't cooked up the details on the particular thermistor yet, will update later.
 
 -- end --
 
@@ -56,7 +98,7 @@ submenus made available:
   - day to run on
   - cancel
   - complete (perhaps only shown after the others have been entered??)
-  
+
 --end--
 
 -- Add Repeated Task (probable):: Priority - Medium --
@@ -74,7 +116,7 @@ submenus made available:
   - monday-sunday (boolean)
   - cancel
   - complete (perhaps only shown after the others have been entered??)
-  
+
 
 --water now option : Priority - High --
 
@@ -94,7 +136,7 @@ submenus available:
 if presently watering
   - line 1 -- display time remaining or amount (gals) remaining
   - line 2 -- push back to end
-  
+
 -- end --
 
 -- property changing note --
@@ -112,4 +154,4 @@ if presently watering
 
 Details needed
 
--- end -- 
+-- end --

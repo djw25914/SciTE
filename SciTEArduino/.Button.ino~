@@ -153,11 +153,7 @@ void menuNextDateTime() {
 }
 
 void handleButtonPressedWatering(pressed) {
-    // Handles button presses that occur while the system is irrigating
-    if (pressed == backButton) {
-        //Abort watering
-        closeSolenoid(1);
-    }
+
 }
 
 void handleButtonPressedXByTimeMenu(button pressed, bool dumping) {

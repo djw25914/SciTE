@@ -1,0 +1,18 @@
+#ifndef SCHEDULE_ITEM_ARRAY_H
+#define SCHEDULE_ITEM_ARRAY_H
+
+class ScheduleItemArray {
+private:
+
+    void _grow();
+    ScheduleItem *_schedules;
+    uint8_t _size;
+    uint8_t _count;
+public:
+    void at(uint8_t position);
+    void add(ScheduleItem &item);
+    void remove(uint8_t position);
+    void remove(ScheduleItem &item)
+};
+
+#endif

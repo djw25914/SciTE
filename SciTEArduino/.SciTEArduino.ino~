@@ -119,7 +119,7 @@ bool nextJob(int & itemNumber, int & dayNumber) //Should be sufficient to find o
 
     time_t lowestTime = now + 8 * 24 * 60 * 60; //Now + 8 days, can't happen ever.
     uint8_t lowestDay = 255;  //255 > 7 as well.
-    ScheduleItem lowestItem = nullptr; //Keep track of the item that is lowest.
+    uint8_t lowestItem = 255; //Possible, but very unlikely
 
     schedule->rewind(); //Start at the beginning
     for (ScheduleItem item = schedule->current(); schedule->end() != true; schedule->next())

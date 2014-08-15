@@ -42,7 +42,7 @@ public:
     bool operator== ( ScheduleItem s );
     bool operator!= ( ScheduleItem s );
 
-    static void _setNextItemNumber(uint16_t n);
+    void _setNextItemNumber(uint16_t n);
 };
 
 #endif SCHEDULEITEM_H
