@@ -53,7 +53,7 @@ const uint8_t MENU_OPTIONS[MENU_LENGTH]
 }
 
 //Text of each menu option
-const char* MENU_TEXTS[MENU_LENGTH] = {
+const String MENU_TEXTS[MENU_LENGTH] = {
     "Water Now",
         "Manual Operation",
         "Fixed Time",
@@ -90,8 +90,8 @@ const uint8_t PIN_SOL2 = 30; //Second solenoid - dump
 
 const uint8_t PIN_DISPLAY_TX = 14; //transmit to display
 
-const char* PIN_THERM_1 = "A10"; //thermistor 1
-const char* PIN_THERM_2 = "A11"; //thermistor 2
+const String PIN_THERM_1 = "A10"; //thermistor 1
+const String PIN_THERM_2 = "A11"; //thermistor 2
 
 //For LCD, these were the defaults
 //LiquidCrystal(rs, enable, d4, d5, d6, d7)
@@ -115,8 +115,8 @@ time_t prevDisplay = 0;
 
 LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_ENABLE, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
 
-LinkedList<ScheduleItem> schedule = new LinkedList<ScheduleItem>();
-LinkedList<OverrideItem> overrides = new LinkedList<OverrideItem>();
+DynamicArray<ScheduleItem> schedule = new DynamicArray<ScheduleItem>();
+DynamicArray<OverrideItem> overrides = new DynamicArray<OverrideItem>();
 
 
 const bool WATERING_SOLENOID=0;

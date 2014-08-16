@@ -47,6 +47,7 @@ void handleButtonPress(button pressed)
             handleButtonPressedAdjustContrast(pressed);
             break;
     }
+    updateDisplay();
 }
 
 void handleButtonPressNoneAction(button pressed)
@@ -140,15 +141,19 @@ void handleButtonPressNoneAction(button pressed)
 }
 
 void menuNextDateTime() {
-    uint8_t itemNumber;
+    uint8_t itemIndex;
     uint8_t dayNumber;
 
-    if (nextJob(itemNumber, dayNumber))
+    if (nextJob(itemIndex, dayNumber))
     {
+        item = schedule.at(itemIndex);
+        uint8_t h = item->hour();
+        uint8_t m = item->minute();
+
         lcd.setCursor(0,0);
         lcd.print(dayStrings[dayNumber]);
         lcd.setCursor(0,1);
-        lcd.print(
+        lcd.print(h + ":" + m);
     }
 }
 
@@ -158,18 +163,31 @@ void handleButtonPressedWatering(pressed) {
         //Abort watering
         closeSolenoid(1);
     }
+    currentAction = none;
 }
 
 void handleButtonPressedXByTimeMenu(button pressed, bool dumping) {
-
+    if (button == backButton)
+    {
+        if (dumping)
+            closeSolenoid(0);
+        else
+            closeSolenoid(1);
+        currentAction = none;
+    }
 }
 
 void handleButtonPressedWaterByVolumeMenu(button pressed, bool dumping) {
 
-}
 
 void handleButtonPressedDumping(button pressed) {
 
+    //Handles button presses that occur while the system is dumping
+    if (pressed = backButton)
+    {
+        closeSolenoid(0);
+    }
+    currentAction = none;
 }
 
 void handleButtonPressedEditScheduleMenu(button pressed) {

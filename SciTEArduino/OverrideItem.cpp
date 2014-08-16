@@ -3,10 +3,9 @@
 #include "Time.h"
 
 OverrideItem::OverrideItem(uint8_t j, uint8_t d, time_t t) {
-    _job = j;
-    _day = d;
-    _time = t;
-    _itemNumber = _nextItemNumber++;
+    _job = j; // Corresponds to ScheduleItem itemNumber
+    _day = d; // Day that override takes place
+    _time = t; // Absolute Start time of the job (relative to epoch)
 }
 
 uint8_t OverrideItem::job() {
@@ -23,15 +22,6 @@ void OverrideItem::setDay(uint8_t d) {
     _day = d;
 }
 
-uint16_t OverrideItem::itemNumber()
-{
-    return _itemNumber;
-}
-
-void OverrideItem::setItemNumber(uint16_t n)
-{
-    _itemNumber = n;
-}
 
 time_t OverrideItem::time() {
     return _time;
@@ -43,19 +33,15 @@ void OverrideItem::setTime(time_t t)
 
 bool OverrideItem::operator== ( OverrideItem o )
 {
-    if ( o->itemNumber == _itemNumber )
+    if (o->time() == _time)
+    )
         return  true;
     return false;
 }
 
 bool OverrideItem::operator!= ( OverrideItem o )
 {
-    if ( o->itemNumber != _itemNumber )
+    if ( o->time != _time )
         return true;
     return false;
-}
-
-void OverrideItem::_setNextItemNumber(uint16_t n)
-{
-    _nextItemNumber = n;
 }

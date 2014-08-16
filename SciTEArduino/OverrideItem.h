@@ -10,8 +10,6 @@ private:
     uint8_t _job;
     uint8_t _day;
     uint8_t _id;
-    uint16_t _itemNumber;
-    static  uint16_t _nextItemNumber;
 
 public:
     OverrideItem(uint8_t job, uint8_t day);
@@ -20,11 +18,6 @@ public:
 
     uint8_t day();
     void setDay(uint8_t);
-
-    uint16_t itemNumber();
-    void setItemNumber(uint16_t n);
-
-    static void _setNextItemNumber(uint16t n);
 
     uint8_t id();
     time_t time();
