@@ -2,14 +2,15 @@
 #include "irrigation_types.h"
 #include "Time.h"
 
-ScheduleItem::ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, uint8_t &days, mode dispenseMode, uint16_t amount) {
+ScheduleItem::ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, bool &days, mode dispenseMode, uint16_t amount) {
     _oneShot = oneShot;
     _hours = hours;
     _minutes = minutes;
-    _days[7]; // Sunday is zero thru Saturday is 6
+    for (int i = 0; i < 7; ++i)
+        _days[i] = days[i]; // Sunday is zero thru Saturday is 6
     mode dispenseMode;
     _amount = amount;  // Minutes for time based, gallons for amount based
-    itemNumber = _nextItemNumber++;
+    _itemNumber = _nextItemNumber++;
 }
 
 bool ScheduleItem::oneShot() {
@@ -33,6 +34,7 @@ void ScheduleItem::setMinutes(uint8_t i) {
     _minutes = i;
 }
 bool * ScheduleItem::days() { //Expects to be assigned to a bool *!!
+    
     return _days;
 }
 void ScheduleItem::setDays(bool b[7]) { //Expects a bool * passed in!!

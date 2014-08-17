@@ -12,11 +12,11 @@ private:
     bool _days[7]; // Sunday is zero!
     mode dispenseMode;
     uint16_t _amount;  // Minutes for time based, gallons for amount based
-    uint16_t itemNumber;
-    static uint16_t nextItemNumber;
+    uint16_t _itemNumber;
+    static uint16_t _nextItemNumber;
 
 public:
-    ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, uint8_t days, mode dispenseMode, uint16_t amount);
+    ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, bool &days, mode dispenseMode, uint16_t amount);
 
     bool oneShot();
     void setOneShot(bool b);

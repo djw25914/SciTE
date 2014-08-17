@@ -18,6 +18,24 @@
  *    20) When is next Watering?
  *    21) How long will next Watering run?
  * 3) Menu
+ * 
+addScheduleHour
+addScheduleMinute
+addScheduleSunday
+addScheduleMonday
+addScheduleTuesday
+addScheduleWednesday
+addScheduleThursday
+addScheduleFriday
+addScheduleSaturday
+addScheduleAmount
+addScheduleDurationHours
+addScheduleDurationMinutes
+addScheduleMode
+addScheduleOneshot
+addScheduleConfirm
+
+
  *    30) View Schedule
  *    31) Edit Schedule
  *        //A list of schedules in the format depicted above, each selectable by pressing enter, else back button to go back

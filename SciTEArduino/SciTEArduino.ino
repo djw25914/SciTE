@@ -34,7 +34,7 @@ void loop() {
     *********************************/
 
     //Handle time-related actions
-    switch (currentAction):
+    /*switch (currentAction):
     {
         case gettingTime:
             handleGettingTime();
@@ -48,17 +48,17 @@ void loop() {
         case dumpSetTime();
             handleDumpSetTime();
             break;
-    }
+    }*/
 
     /* Also handle Thermistor dump settings */
 
-
+    updateDisplay();
 
     sleep (1000);
 }
 
 void handleGettingTime() {
-
+    
 }
 
 void handleWaterSetTime() {

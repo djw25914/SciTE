@@ -52,89 +52,87 @@ void handleButtonPress(button pressed)
 
 void handleButtonPressNoneAction(button pressed)
 {
+    //We're in the main menu
     if (pressed == upButton){                               //Move cursor up one position
-        if (minor(currentSelection) > 0){               //If minor digit is > 0, decrement it
-            --currentSelection;
-            updateDisplay();
+        if (minor(mainMenu.currentSelection) > 0){               //If minor digit is > 0, decrement it
+            --mainMenu.currentSelection;
           }}
     if (pressed == downButton){                         //Move cursor down one position
-        if (inMenu(currentSelection+1)){                //make sure +1 is an option
-            ++currentSelection;
-            updateDisplay();
+        if (inMenu(mainMenu.currentSelection+1)){                //make sure +1 is an option
+            ++mainMenu.currentSelection;
           }}
     //ignore left and right presses
     if (pressed == backButton){                         // Move up a level
-        if (currentSelection > 10){                     // If <10, already the top level menu, do nothing
-            currentSelection %= 10;
-            updateDisplay();
+        if (mainMenu.currentSelection > 10){                     // If <10, already the top level menu, do nothing
+            mainMenu.currentSelection %= 10;
           }}
 
     //Enter handling is more delicate ...
     if (pressed == enterButton){
-        switch (currentSelection)
+        switch (mainMenu.currentSelection)
         {
             case MENU_WATER_NOW:                        // Enter into the Watering submenu
-            currentSelection = MENU_WATER_NOW * 10;
-            updateDisplay();
+                mainMenu.currentSelection = mainMenu.MENU_WATER_NOW * 10;
                 break;
             case MENU_WATER_UNTIL_BACK:                 // Bring up the screen for watering until back is pressed
-            currentAction = waterUntilBackMenu;
-            updateDisplay();
+                currentAction = watering;
+                currentMode = manualMode;
+                endTime = now() + 60*60*3;              // End after 3 hours regardless whether back has been pressed..., in case somebody forgets. to stop it.
                 break;
             case MENU_WATER_FIXED_TIME:                 // Bring up the special menu for a waterering by time
-            currentAction = waterSetTimeMenu;
-            updateDisplay();
+                currentAction = waterSetTimeMenu;
                 break;
             case MENU_WATER_FIXED_AMOUNT:               // Bring up the special menu for watering by volume
-            currentAction = waterSetAmount;
-            updateDisplay();
+                currentAction = waterSetAmountMenu;
                 break;
             case MENU_DUMP_NOW:                         // Enter into the Dumping submenu
-            currentSelection = MENU_DUMP_NOW * 10;
+                mainMenu.currentSelection = mainMenu.MENU_DUMP_NOW * 10;
                 break;
             case MENU_DUMP_UNTIL_BACK:                  // Bring up the screen for dumping until back is pressed
-            currentAction = dumpUntilBack;
-            updateDisplay();
+                currentAction = dumping;
+                currentMode = manualMode;
                 break;
             case MENU_DUMP_FIXED_TIME:                  // Bring up the special menu for dumping by time
-            currentAction = dumpFixedTime;
-            updateDisplay();
+                currentAction = dumpFixedTimeMenu;
                 break;
             case MENU_SYSTEM_STATUS:                    // Enter into the System Status submenu
-            currentSelection = MENU_SYSTEM_STATUS * 10;
+                mainMenu.currentSelection = mainMenu.MENU_SYSTEM_STATUS * 10;
                 break;
             case MENU_NEXT_DATE_TIME:                   // Display screen that shows date/time of next watering
-            menuNextDateTime();
+                menuNextDateTime();
                 break;
             case MENU_NEXT_TIME_AMOUNT:                 // Display screen that shows volume/timelimit of next watering
-            menuNextTimeAmount();
+                menuNextTimeAmount();
                 break;
             case MENU_SCHEDULE:                         // Enter into the Schedule submenu
-            currentSelection = MENU_SCHEDULE*10;
+                mainMenu.currentSelection = mainMenu.MENU_SCHEDULE*10;
                 break;
             case MENU_VIEW_SCHEDULE:                    // Bring up the view schedule screen
-            menuViewSchedule();
+                menuViewSchedule();
                 break;
             case MENU_EDIT_SCHEDULE:                    // Bring up the edit schedule screen
-            menuEditSchedule();
+                menuEditSchedule();
                 break;
             case MENU_ADD_SCHEDULE:                     // Bring up the add schedule screen
-            menuAddSchedule();
+                addScheduleMenu.currentSelection = 1;
+                menuAddSchedule();
                 break;
             case MENU_REMOVE_SCHEDULE:                  // Bring up the remove schedule screen
-            menuRemoveSchedule();
+                generateRemoveScheduleOptions();
+                if 
+                menuRemoveSchedule();
                 break;
             case MENU_OVERRIDE_SCHEDULE:                // Bring up the override schedule screen
-            menuOverrideSchedule();
+                menuOverrideSchedule();
                 break;
             case MENU_SCREEN_SETTINGS:                  // Enter into the Screen Settings submenu
-            currentSelection = MENU_SCREEN_SETTINGS * 10;
+                mainMenu.currentSelection = MENU_SCREEN_SETTINGS * 10;
                 break;
             case MENU_SCREEN_BRIGHTNESS:                // Bring up the Alter Screen Brightness screen
-            menuScreenBrightness();
+                menuScreenBrightness();
                 break;
             case MENU_SCREEN_CONTRAST:                  // Bring up the Alter Screen Contrast Screen
-            menuScreenContrast();
+                menuScreenContrast();
                 break;
         }
     }
@@ -144,7 +142,7 @@ void menuNextDateTime() {
     uint8_t itemIndex;
     uint8_t dayNumber;
 
-    if (nextJob(itemIndex, dayNumber))
+    if ( nextJob(itemIndex, dayNumber))
     {
         item = schedule.at(itemIndex);
         uint8_t h = item->hour();
@@ -161,41 +159,258 @@ void handleButtonPressedWatering(pressed) {
     // Handles button presses that occur while the system is irrigating
     if (pressed == backButton) {
         //Abort watering
-        closeSolenoid(1);
+        closeSolenoid(WATERING_SOLENOID);
     }
     currentAction = none;
+    currentMode = none;
+    endTime = 0;
+    volumeRemaining = 0;
 }
 
 void handleButtonPressedXByTimeMenu(button pressed, bool dumping) {
-    if (button == backButton)
+    if ( pressed == upButton )
     {
-        if (dumping)
-            closeSolenoid(0);
-        else
-            closeSolenoid(1);
+        xByTimeMenu.hour++;
+    }
+    else if ( pressed == rightButton )
+    {
+        xByTimeMenu.minute += TIME_OFFSET;
+    }
+    else if ( pressed == downButton)
+    {
+        xByTimeMenu.hour -= 1;
+    }
+    else if ( pressed == leftButton )
+    {
+        xByTimeMenu.minute -= TIME_OFFSET;
+    }
+    else if ( pressed == backButton )
+    {
         currentAction = none;
+    }
+    else if ( pressed == enterButton )
+    {
+        if ( xByTimeMenu.hour > 0 || xByTimeMenu.minute > 0 )
+        {
+            if (dumping)
+                currentAction = dumping;
+            else
+                currentAction = watering;
+            currentMode = timeMode;
+            endTime = now() + xByTimeMenu.hour * 60*60 + xByTimeMenu.minute * 60;
+        }
     }
 }
 
-void handleButtonPressedWaterByVolumeMenu(button pressed, bool dumping) {
-
+void handleButtonPressedWaterByVolumeMenu(button pressed) {
+    if (pressed == leftButton )
+    {
+        if ( waterByVolumeMenu.amount > 0 )
+        {
+            waterByVolumeMenu.amount -= 5;
+        }
+    }
+    else if ( pressed == rightButton )
+    {
+        if ( waterByVolumeMenu.amount < 999 )
+        {
+            waterByVolumeMenu.amount += 5;
+        }
+    }
+    else if ( pressed == backButton )
+    {
+        currentAction = noneAction;
+    }
+    else if ( pressed == enterbutton )
+    {
+        volumeRemaining = 3785.41 * waterByVolumeMenuAmount; //Convert to milliliters
+        currentAction = watering;
+        currentMode = amountMode;
+    }
+}
 
 void handleButtonPressedDumping(button pressed) {
 
     //Handles button presses that occur while the system is dumping
-    if (pressed = backButton)
+    if (pressed == backButton)
     {
-        closeSolenoid(0);
+        closeSolenoid(DUMPING_SOLENOID);
+        currentAction = none;
+        currentMode = none;
+        endTime = 0;
     }
-    currentAction = none;
 }
 
 void handleButtonPressedEditScheduleMenu(button pressed) {
-
+    /*Edit schedule menu has a list of current schedule items, this:
+    * ---- moves up and down within that list
+    * ---- selects an item for editing
+    * ---- or cancels/goes back
+    */
+    
+    if ( pressed == backButton )
+    {
+        currentAction = none;
+        editScheduleMenu.currentSelection = 0;
+    }
+    else if ( pressed == upButton && editScheduleMenu.currentSelection > 1)
+    {
+        --editScheduleMenu.currentSelection;
+    }
+    else if ( pressed == downButton && (editScheduleMenu.currentSelection < editScheduleMenu.count)
+    {
+        ++currentSelectionEditScheduleMenu;
+    }
+    else if ( pressed = enterButton && editScheduleMenu.currentSelection > 0 )
+    {
+        /// /// /// Implement me later. Needs to remove the current schedule item, and then bring up the Add Schedule menu with the same settings as before
+        // Gather current settings
+        bool oneShot = schedule.at(editScheduleMenu.currentSelection)->oneShot();
+        uint8_t hour = schedule.at(editScheduleMenu.currentSelection)->hour();
+        uint8_t minutes = schedule.at(editScheduleMenu.currentSelection)->minutes();
+        bool * days = schedule.at(editScheduleMenu.currentSelection)->days(); 
+        mode dispenseMode = schedule.at(editScheduleMenu.currentSelection)->dispenseMode();
+        uint16_t amount = schedule.at(editScheduleMenu.currentSelection)->amount();
+        // Remove this item
+        schedule.remove(currentSelectionEditScheduleMenu)  
+        // Enter the add menu with current settings
+        addScheduleMenu.oneShot = oneShot;
+        addScheduleMenu.hour = hour;
+        addScheduleMenu.minutes = minutes;
+        for (int i = 0; i <  7; ++i)
+            addScheduleMenu.days[i] = days[i];
+        addScheduleMenu.dispenseMode = dispenseMode;
+        addScheduleMenu.amount = amount;
+        addScheduleMenu.currentSelection = 1;
+        currentAction = addSchedule;
+    }
 }
 
 void handleButtonPressedAddScheduleMenu(button pressed) {
+    if ( pressed == backButton )
+    {
+        addScheduleMenu.reset();
+        currentAction = none;
+    }
+    else if ( pressed == upButton )
+    {
+        if ( addScheduleMenu.currentSelection > 1 )
+        {
+            --addScheduleMenu.currentSelection;
+        }
+    }
+    else if ( pressed == downButton )
+    {
+        if ( addScheduleMenu.currentSelection < addScheduleMenu.MENU_LENGTH)
+            ++addScheduleMenu.currentSelection;
+    }
+    else if ( pressed == leftButton )
+    {
+        switch (addScheduleMenu.currentSelection)
+        {
+            case addScheduleMenu.MENU_HOUR:
+                addScheduleMenu.hour = (24 + addScheduleMenu.hour - 1) % 24;
+                break;
+            case addScheduleMenu.MENU_MINUTE:
+                addScheduleMenu.minute = (60 + addScheduleMenu.minute - TIME_OFFSET) % 60;
+                break;
+            case addScheduleMenu.MENU_SUNDAY:
+                addScheduleMenu.days[0] = (2 + addScheduleMenu.days[0] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_MONDAY:
+                addScheduleMenu.days[1] = (2 + addScheduleMenu.days[1] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_TUESDAY:
+                addScheduleMenu.days[2] = (2 + addScheduleMenu.days[2] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_WEDNESDAY:
+                addScheduleMenu.days[3] = (2 + addScheduleMenu.days[3] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_THURSDAY:
+                addScheduleMenu.days[4] = (2 + addScheduleMenu.days[4] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_FRIDAY:
+                addScheduleMenu.days[5] = (2 + addScheduleMenu.days[5] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_SATURDAY:
+                addScheduleMenu.days[6] = (2 + addScheduleMenu.days[6] - 1) % 2;
+                break;
+            case addScheduleMenu.MENU_AMOUNT:
+                if (addScheduleMenu.amount > 0)
+                    addScheduleMenu.amount = addScheduleMenu.amount - TIME_OFFSET;
+            case addScheduleMenu.MENU_MODE:=
+                if (addScheduleMenu.mode == timeMode)
+                    addScheduleMenu.mode = amountMode;
+                else
+                    addScheduleMenu.mode = timeMode;
+            case addScheduleMenu.ONE_SHOT:
+                addScheduleMenu.oneShot = (2 + addScheduleMenu.oneShot - 1) % 2;
+        }
+    }
+    else if ( pressed == rightButton )
+    {
+        switch (addScheduleMenu.currentSelection)
+        {
+            case addScheduleMenu.MENU_HOUR:
+                addScheduleMenu.hour = (addScheduleMenu.hour + 1) % 24;
+                break;
+            case addScheduleMenu.MENU_MINUTE:
+                addScheduleMenu.minute = (addScheduleMenu.minute + TIME_OFFSET) % 60;
+                break;
+            case addScheduleMenu.MENU_SUNDAY:
+                addScheduleMenu.days[0] = (addScheduleMenu.days[0] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_MONDAY:
+                addScheduleMenu.days[1] = (addScheduleMenu.days[1] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_TUESDAY:
+                addScheduleMenu.days[2] = (addScheduleMenu.days[2] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_WEDNESDAY:
+                addScheduleMenu.days[3] = (addScheduleMenu.days[3] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_THURSDAY:
+                addScheduleMenu.days[4] = (addScheduleMenu.days[4] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_FRIDAY:
+                addScheduleMenu.days[5] = (addScheduleMenu.days[5] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_SATURDAY:
+                addScheduleMenu.days[6] = (addScheduleMenu.days[6] + 1) % 2;
+                break;
+            case addScheduleMenu.MENU_AMOUNT:
+                if (addScheduleMenu.amount > 0)
+                    addScheduleMenu.amount = addScheduleMenu.amount - TIME_OFFSET;
+            case addScheduleMenu.MENU_MODE:=
+                if (addScheduleMenu.dispenseMode == timeMode)
+                    addScheduleMenu.dispenseMode = amountMode;
+                else
+                    addScheduleMenu.mode = timeMode;
+            case addScheduleMenu.ONE_SHOT:
+                addScheduleMenu.oneShot = (addScheduleMenu.oneShot + 1) % 2;
+        }
+    }
+    else if ( pressed == enterButton )
+    {
+        if (addScheduleMenu.amount > 0 && 
+            (addScheduleMenu.days[0] ||
+             addScheduleMenu.days[1] ||
+             addScheduleMenu.days[2] ||
+             addScheduleMenu.days[3] ||
+             addScheduleMenu.days[4] ||
+             addScheduleMenu.days[5] ||
+             addScheduleMenu.days[6]))
+        {
+            // Everything seems okay, add a schedule item
 
+            ScheduleItem::ScheduleItem(bool oneShot, uint8_t hour, uint8_t minutes, bool &days, mode dispenseMode, uint16_t amount) {
+          
+            ScheduleItem t = new ScheduleItem(addScheduleMenu.oneShot, addScheduleMenu.hour, addScheduleMenu.minutes, addScheduleMenu.days, addScheduleMenu.dispenseMode, addScheduleMenu.amount);
+            schedule.add(t);
+            addScheduleMenu.reset();
+            currentAction=none;
+        }
+    }
 }
 
 void handleButtonPressedRemoveScheduleMenu(button pressed) {
@@ -204,4 +419,12 @@ void handleButtonPressedRemoveScheduleMenu(button pressed) {
 
 void handleButtonPressedOverrideScheduleMenu(button pressed) {
 
+}
+
+void generateScheduleOptions()
+{
+    for (int i = 0; i < schedule->count(); ++i )
+    {
+        String schedule = 
+    }
 }
